@@ -18,4 +18,3 @@ if (($failCount > 0 )); then
 	find $dir -name failures*
 fi
 exit $failCount
-
