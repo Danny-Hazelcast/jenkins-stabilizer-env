@@ -1,0 +1,58 @@
+<hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config
+                               http://www.hazelcast.com/schema/config/hazelcast-config-3.2.xsd"
+           xmlns="http://www.hazelcast.com/schema/config"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <group>
+        <name>dev</name>
+    </group>
+
+    <network>
+        <port port-count="200" auto-increment="true">5701</port>
+        <join>
+            <multicast enabled="false"/>
+            <tcp-ip enabled="true">
+		<member>10.182.114.92</member><member>10.169.226.134</member><member>10.63.16.121</member><member>10.65.154.31</member><member>10.102.161.167</member><member>10.178.158.147</member><member>10.183.158.74</member><member>10.234.169.194</member>
+            </tcp-ip>
+        </join>
+    </network>
+
+    <partition-group enabled="false" group-type="HOST_AWARE"></partition-group>
+
+    <map name="MapStore*">
+        <map-store enabled="true">
+            <class-name>com.hazelcast.stabilizer.tests.map.helpers.MapStoreWithCounter</class-name>
+            <write-delay-seconds>5</write-delay-seconds>
+        </map-store>
+    </map>
+
+    <map name="MaxSizeMap*">
+        <eviction-policy>LRU</eviction-policy>
+        <max-size policy="PER_NODE">1000</max-size>
+        <eviction-percentage>25</eviction-percentage>
+        <min-eviction-check-millis>0</min-eviction-check-millis>
+    </map>
+
+    <map name="NoBackup*">
+        <backup-count>0</backup-count>
+        <async-backup-count>0</async-backup-count>
+        <statistics-enabled>false</statistics-enabled>
+    </map>
+
+    <map name="ObjectMap*">
+        <in-memory-format>OBJECT</in-memory-format>
+	<backup-count>2</backup-count>
+    </map>
+
+    <serialization>
+        <portable-version>1</portable-version>
+        <portable-factories>
+            <portable-factory factory-id="10000000">com.hazelcast.stabilizer.tests.backpressure.SomeRequestPortableFactory</portable-factory>
+        </portable-factories>
+    </serialization>
+
+	<management-center enabled="false">
+		http://54.87.52.100:8080/mancenter
+  	</management-center>
+
+</hazelcast>
